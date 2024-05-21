@@ -24,12 +24,17 @@ NagiosGraph configuration lives in /opt/nagiosgraph/etc
 docker pull jasonrivers/nagios:latest
 ```
 
+### Building
+```
+docker build -t my_nagios .
+```
+
 ### Running
 
 Run with the example configuration with the following:
 
 ```sh
-docker run --name nagios4 -p 0.0.0.0:8080:80 jasonrivers/nagios:latest
+docker run --name nagios4 -p 0.0.0.0:8080:80 my_nagios
 ```
 
 alternatively you can use external Nagios configuration & log data with the following:
