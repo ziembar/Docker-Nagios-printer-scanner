@@ -233,6 +233,12 @@ RUN mkdir -p -m 0755 /usr/share/snmp/mibs                     && \
     ln -s ${NAGIOS_HOME}/bin/nagios /usr/local/bin/nagios     && \
     download-mibs && echo "mibs +ALL" > /etc/snmp/snmp.conf
 
+
+RUN pip install pysnmp
+ADD src/snmp_discover.py /home/snmp_discover.py
+
+
+
 RUN sed -i 's,/bin/mail,/usr/bin/mail,' ${NAGIOS_HOME}/etc/objects/commands.cfg  && \
     sed -i 's,/usr/usr,/usr,'           ${NAGIOS_HOME}/etc/objects/commands.cfg
 
