@@ -86,6 +86,18 @@ define service {{
     check_interval          10
     retry_interval          1
 }}
+
+
+define service{{
+       use                             generic-service
+       host_name               {unique_name}
+       hostgroup_name                  network-printers
+       service_description             printer status
+       check_command                   check_netsnmp2! -H {ip}
+       notification_options            c,u,r
+       check_interval          1
+
+       }}
                     """)
 
 if __name__ == "__main__":

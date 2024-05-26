@@ -235,9 +235,7 @@ RUN mkdir -p -m 0755 /usr/share/snmp/mibs                     && \
 
 
 RUN pip install pysnmp
-ADD src/snmp_discover.py /home/snmp_discover.py
 RUN mkdir -p /opt/nagios/etc/discovered_printers
-
 
 RUN sed -i 's,/bin/mail,/usr/bin/mail,' ${NAGIOS_HOME}/etc/objects/commands.cfg  && \
     sed -i 's,/usr/usr,/usr,'           ${NAGIOS_HOME}/etc/objects/commands.cfg
@@ -252,6 +250,8 @@ RUN rm -rf /etc/sv/getty-5
 ADD overlay /
 
 RUN chmod 755 /etc/rc.d/init.d/nagios
+RUN chmod +x /opt/JR-Nagios-Plugins/check_snmp_printer2
+RUN ln -s /opt/nagios/libexec/utils.sh ./utils.sh
 
 RUN echo "use_timezone=${NAGIOS_TIMEZONE}" >> ${NAGIOS_HOME}/etc/nagios.cfg
 
