@@ -48,6 +48,10 @@ docker run --name nagios4  \
   -v /path-to-nagiosgraph-etc:/opt/nagiosgraph/etc \
   -p 0.0.0.0:8080:80 jasonrivers/nagios:latest
 ```
+### Reloading
+```
+./etc/rc.d/init.d/nagios reload
+```
 
 Note: The path for the custom plugins will be /opt/Custom-Nagios-Plugins, you will need to reference this directory in your configuration scripts.
 
