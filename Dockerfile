@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 MAINTAINER Jason Rivers <jason@jasonrivers.co.uk>
-
+		   
 ENV NAGIOS_HOME            /opt/nagios
 ENV NAGIOS_USER            nagios
 ENV NAGIOS_GROUP           nagios
@@ -23,6 +23,7 @@ ENV NRPE_BRANCH            nrpe-4.1.0
 ENV NCPA_BRANCH            v2.4.1
 ENV NSCA_BRANCH            nsca-2.10.2
 ENV NAGIOSTV_VERSION       0.8.7
+
 
 
 RUN echo postfix postfix/main_mailer_type string "'Internet Site'" | debconf-set-selections  && \
@@ -233,8 +234,10 @@ RUN mkdir -p -m 0755 /usr/share/snmp/mibs                     && \
     ln -s ${NAGIOS_HOME}/bin/nagios /usr/local/bin/nagios     && \
     download-mibs && echo "mibs +ALL" > /etc/snmp/snmp.conf
 
-
+RUN apt-get update
 RUN pip install pysnmp
+RUN pip install python-nmap
+RUN apt-get install nmap -y
 RUN mkdir -p /opt/nagios/etc/discovered_printers
 
 RUN sed -i 's,/bin/mail,/usr/bin/mail,' ${NAGIOS_HOME}/etc/objects/commands.cfg  && \
@@ -299,6 +302,9 @@ RUN echo "ServerName ${NAGIOS_FQDN}" > /etc/apache2/conf-available/servername.co
     echo "PassEnv TZ" > /etc/apache2/conf-available/timezone.conf            && \
     ln -s /etc/apache2/conf-available/servername.conf /etc/apache2/conf-enabled/servername.conf    && \
     ln -s /etc/apache2/conf-available/timezone.conf /etc/apache2/conf-enabled/timezone.conf
+
+
+
 
 EXPOSE 80 5667 
 
