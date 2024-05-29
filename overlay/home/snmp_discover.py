@@ -16,7 +16,6 @@ def discover_hosts():
     else:
         delete_existing_configs(output_dir)
 
-    # Retrieve the network from the environment variable
     network = os.getenv('NETWORK')
     if not network:
         raise ValueError("NETWORK environment variable is not set")
@@ -26,7 +25,6 @@ def discover_hosts():
     except ValueError as e:
         raise ValueError(f"Invalid network format: {e}")
 
-    # Initialize the nmap scanner
     nm = nmap.PortScanner()
     print("Scanning network for active hosts (ICMP)...")
     nm.scan(hosts=str(network), arguments='-sn --unprivileged')
@@ -41,9 +39,11 @@ def discover_hosts():
 
     host_names = {}
 
+    hostgroup_defined = False
+
     for ip in active_hosts:
-        community = 'public'    # Change this to your SNMP community string
-        snmp_timeout = 0.05     # Timeout in seconds
+        community = 'public'
+        snmp_timeout = 0.05
 
         error_indication, error_status, error_index, var_binds = next(
             getCmd(SnmpEngine(),
@@ -58,63 +58,60 @@ def discover_hosts():
         elif error_status:
             print(f"No SNMP: {error_status.prettyPrint()}, ip: {ip}")
         else:
-            for var_bind in var_binds:
-                full_name = var_bind[1].prettyPrint()
-                first_word = full_name.split()[0]
+                        for var_bind in var_binds:
+                            full_name = var_bind[1].prettyPrint()
+                            first_word = full_name.split()[0]
 
-                if first_word in host_names:
-                    host_names[first_word] += 1
-                    unique_name = f"{first_word}{host_names[first_word]}"
-                else:
-                    host_names[first_word] = 1
-                    unique_name = first_word
+                            if first_word in host_names:
+                                host_names[first_word] += 1
+                                unique_name = f"{first_word}{host_names[first_word]}"
+                            else:
+                                host_names[first_word] = 1
+                                unique_name = first_word
 
-                print(f"SNMP! Saved config file for ip: {ip}")
-                with open(f"{output_dir}{unique_name}.cfg", "w") as f:
-                    f.write(f"""
-define host {{
-    use                     generic-printer         ; Inherit default values from a template
-    host_name               {unique_name}           ; The name we're giving to this printer
-    alias                   {full_name} printer     ; A longer name associated with the printer
-    address                 {ip}                    ; IP address of the printer
-    hostgroups              network-printers        ; Host groups this printer is associated with
-}}
-
-
-
-define service {{
-
-    use                     generic-service         ; Inherit values from a template
-    host_name               {unique_name}              ; The name of the host the service is associated with
-    service_description     Printer Status          ; The service description
-    check_command           check_hpjd!-C public    ; The command used to monitor the service
-    check_interval          10                      ; Check the service every 10 minutes under normal conditions
-    retry_interval          1                       ; Re-check the service every minute until its final/hard state is determined
-}}
-
-define service {{
-
-    use                     generic-service
-    host_name               {unique_name}
-    service_description     PING
-    check_command           check_ping!3000.0,80%!5000.0,100%
-    check_interval          10
-    retry_interval          1
-}}
+                            print(f"SNMP! Saved config file for ip: {ip}")
+                            with open(f"{output_dir}{unique_name}.cfg", "w") as f:
+                                config_content = f"""
+            define host {{
+                use                     generic-printer         ; Inherit default values from a template
+                host_name               {unique_name}           ; The name we're giving to this printer
+                alias                   {full_name} printer     ; A longer name associated with the printer
+                address                 {ip}                    ; IP address of the printer
+                hostgroups              network-printers        ; Host groups this printer is associated with
+            }}
 
 
-define service{{
-       use                             generic-service
-       host_name                       {unique_name}
-       hostgroup_name                  network-printers
-       servicegroup_name               snmpServices
-       service_description             printer status
-       check_command                   check_netsnmp2! -H {ip}
-       notification_options            c,u,r
-       check_interval          1
 
-       }}
-                    """)
+            define service {{
+                use                     generic-service
+                host_name               {unique_name}
+                service_description     Printer Status
+                check_command           check_hpjd!-C public
+                check_interval          10
+                retry_interval          1
+            }}
+
+            define service {{
+                use                     generic-service
+                host_name               {unique_name}
+                service_description     PING
+                check_command           check_ping!3000.0,80%!5000.0,100%
+                check_interval          10
+                retry_interval          1
+            }}
+
+            define service{{
+                   use                             generic-service
+                   host_name                       {unique_name}
+                   hostgroup_name                  network-printers
+                   servicegroup_name               snmpServices
+                   service_description             printer status
+                   check_command                   check_netsnmp2! -H {ip}
+                   notification_options            c,u,r
+                   check_interval          1
+
+                   }}
+            """
 
 if __name__ == "__main__":
     discover_hosts()
