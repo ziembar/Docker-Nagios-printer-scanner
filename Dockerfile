@@ -253,7 +253,9 @@ RUN rm -rf /etc/sv/getty-5
 ADD overlay /
 
 RUN chmod 755 /etc/rc.d/init.d/nagios
+RUN chmod +x /home/rescan_reload.sh
 RUN chmod +x /opt/JR-Nagios-Plugins/check_snmp_printer2
+RUN echo "*/5 * * * * /home/rescan_reload.sh" >> /etc/crontab
 RUN ln -s /opt/nagios/libexec/utils.sh ./utils.sh
 
 RUN echo "use_timezone=${NAGIOS_TIMEZONE}" >> ${NAGIOS_HOME}/etc/nagios.cfg

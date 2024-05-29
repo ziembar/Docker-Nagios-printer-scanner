@@ -75,15 +75,12 @@ def discover_hosts():
 define host {{
     use                     generic-printer         ; Inherit default values from a template
     host_name               {unique_name}           ; The name we're giving to this printer
-    alias                   {full_name}             ; A longer name associated with the printer
+    alias                   {full_name} printer     ; A longer name associated with the printer
     address                 {ip}                    ; IP address of the printer
     hostgroups              network-printers        ; Host groups this printer is associated with
 }}
 
-define hostgroup {{
-    hostgroup_name          network-printers        ; The name of the hostgroup
-    alias                   Network Printers        ; Long name of the group
-}}
+
 
 define service {{
 
@@ -108,8 +105,9 @@ define service {{
 
 define service{{
        use                             generic-service
-       host_name               {unique_name}
+       host_name                       {unique_name}
        hostgroup_name                  network-printers
+       servicegroup_name               snmpServices
        service_description             printer status
        check_command                   check_netsnmp2! -H {ip}
        notification_options            c,u,r
