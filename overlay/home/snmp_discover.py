@@ -71,7 +71,7 @@ def discover_hosts():
 
                             print(f"SNMP! Saved config file for ip: {ip}")
                             with open(f"{output_dir}{unique_name}.cfg", "w") as f:
-                                config_content = f"""
+                                f.write(f"""
             define host {{
                 use                     generic-printer         ; Inherit default values from a template
                 host_name               {unique_name}           ; The name we're giving to this printer
@@ -101,17 +101,16 @@ def discover_hosts():
             }}
 
             define service{{
-                   use                             generic-service
-                   host_name                       {unique_name}
-                   hostgroup_name                  network-printers
-                   servicegroup_name               snmpServices
-                   service_description             printer status
-                   check_command                   check_netsnmp2! -H {ip}
-                   notification_options            c,u,r
-                   check_interval          1
-
+                use                             generic-service
+                host_name                       {unique_name}
+                hostgroup_name                  network-printers
+                servicegroup_name               snmpServices
+                service_description             printer status
+                check_command                   check_netsnmp2! -H {ip}
+                notification_options            c,u,r
+                check_interval          1
                    }}
-            """
+            """)
 
 if __name__ == "__main__":
     discover_hosts()
