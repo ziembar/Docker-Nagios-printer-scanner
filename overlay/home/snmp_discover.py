@@ -115,7 +115,6 @@ def discover_hosts():
                                     host_name               {unique_name}           ; The name we're giving to this printer
                                     alias                   {full_name} printer     ; A longer name associated with the printer
                                     address                 {ip}                    ; IP address of the printer
-                                    hostgroups              network-printers        ; Host groups this printer is associated with
                                 }}
 
 
