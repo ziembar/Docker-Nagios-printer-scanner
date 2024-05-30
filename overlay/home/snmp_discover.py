@@ -9,7 +9,7 @@ def delete_existing_configs(output_dir):
         if os.path.isfile(file_path):
             os.unlink(file_path)
 def append_commands_to_cfg(output):
-    commands_cfg_path = "/opt/nagios/etc/objects/commands.cfg"
+    commands_cfg_path = "/opt/nagios/etc/objects/dynamicCommands.cfg"
 
 
     with open(commands_cfg_path, "a") as cfg_file:

@@ -256,7 +256,6 @@ ADD overlay /
 RUN chmod 755 /etc/rc.d/init.d/nagios
 RUN chmod +x /home/rescan_reload.sh
 RUN chmod +x /opt/JR-Nagios-Plugins/check_snmp_printer2
-RUN echo "*/5 * * * * /home/rescan_reload.sh" >> /etc/crontab
 RUN ln -s /opt/nagios/libexec/utils.sh ./utils.sh
 
 
@@ -291,6 +290,8 @@ RUN cd /opt/nagiosgraph/etc && \
     sh fix-nagiosgraph-multiple-selection.sh
 
 RUN rm /opt/nagiosgraph/etc/fix-nagiosgraph-multiple-selection.sh
+
+RUN touch /opt/nagios/etc/objects/dynamicCommands.cfg
 
 # enable all runit services
 RUN ln -s /etc/sv/* /etc/service
