@@ -237,8 +237,9 @@ RUN mkdir -p -m 0755 /usr/share/snmp/mibs                     && \
 RUN apt-get update
 RUN pip install pysnmp
 RUN pip install python-nmap
-RUN pip install sendgrid -y
 RUN apt-get install nmap -y
+RUN pip install sendgrid
+
 RUN mkdir -p /opt/nagios/etc/discovered_printers
 
 RUN sed -i 's,/bin/mail,/usr/bin/mail,' ${NAGIOS_HOME}/etc/objects/commands.cfg  && \
