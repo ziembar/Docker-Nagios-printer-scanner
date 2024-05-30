@@ -260,8 +260,8 @@ RUN ./opt/nagios/bin/nagios -v /opt/nagios/etc/nagios.cfg
 
 
 RUN chmod 755 /etc/rc.d/init.d/nagios
-RUN chmod +x /home/rescan_reload.sh
-RUN chmod +x /opt/JR-Nagios-Plugins/check_snmp_printer2
+RUN chmod +x /opt/custom-plugins/rescan_reload.sh
+RUN chmod +x /opt/custom-plugins/check_snmp_printer2
 RUN ln -s /opt/nagios/libexec/utils.sh ./utils.sh
 
 
