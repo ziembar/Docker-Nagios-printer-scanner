@@ -114,6 +114,7 @@ def discover_hosts():
                                     service_description     Printer Status
                                     check_command           check_hpjd!-C public
                                     check_interval          10
+                                    contacts                admin
                                     retry_interval          1
                                 }}
 
@@ -123,6 +124,7 @@ def discover_hosts():
                                     service_description     PING
                                     check_command           check_ping!3000.0,80%!5000.0,100%
                                     check_interval          10
+                                    contacts                admin
                                     retry_interval          1
                                 }}
                                 """)
@@ -137,6 +139,7 @@ def discover_hosts():
                                     service_description     {service_description}
                                     check_command           check_netsnmp2_{service_command}! -H {ip}
                                     notification_options    c,u,r
+                                    contacts          admin
                                     check_interval          1
                                 }}
                                                 """)           
