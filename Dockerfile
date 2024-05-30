@@ -290,6 +290,8 @@ RUN cd /opt/nagiosgraph/etc && \
 
 RUN rm /opt/nagiosgraph/etc/fix-nagiosgraph-multiple-selection.sh
 
+RUN touch /opt/nagios/etc/objects/dynamicCommands.cfg
+
 # enable all runit services
 RUN ln -s /etc/sv/* /etc/service
 
