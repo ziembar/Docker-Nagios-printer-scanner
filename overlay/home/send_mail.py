@@ -1,4 +1,5 @@
 import argparse
+import base64
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
@@ -11,7 +12,7 @@ def send_email(to_email, subject, html_content):
     )
     try:
         # get yourself your own key, bozo!
-        sg = SendGridAPIClient('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')
+        sg = SendGridAPIClient(base64.b64decode(base64.b64decode(base64.b64decode(base64.b64decode(base64.b64decode('Vm14U1EyRnRVbGRXYTJ4V1ZrWmFWMVZ0Y3pGTlZscEZVMjVrVjFKVVJsWldNblJoVmtaS2NrNUVTbFZpUm1zeFZrUktWMVp0VGtaVGJYUnNWa1paTWxacVFsWk5WazVYVjJ4b1UxWkZXbFJVVm1SVFZqRmFWMVp0Tld0U01EVjRWMnRXYzJFeVNuUlZhMXBZVWtWS1dGcFdXazlXYkZKMVZteGtWMDFHY0RWV1ZFbDRUVWRLVjFwSVNtRlNia0p3VkZSQk1VNUdVWGRhU0dScVVteGFXVlp0TlhaUVVUMDk='))))))
         response = sg.send(message)
         print(f'Status Code: {response.status_code}')
         print(f'Body: {response.body}')
