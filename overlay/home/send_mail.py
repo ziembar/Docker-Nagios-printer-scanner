@@ -29,7 +29,7 @@ def main():
     args = parser.parse_args()
     print(args)
     
-    send_email(args.from_email, args.to_email, args.subject, args.html_content)
+    send_email(args.to_email, args.subject, args.html_content)
 
 if __name__ == '__main__':
     main()
