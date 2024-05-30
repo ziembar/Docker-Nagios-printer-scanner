@@ -104,7 +104,7 @@ def discover_hosts():
                 use                             generic-service
                 host_name                       {unique_name}
                 hostgroup_name                  network-printers
-                servicegroup_name               snmpServices
+                servicegroups                   snmpServices
                 service_description             printer status
                 check_command                   check_netsnmp2! -H {ip}
                 notification_options            c,u,r
