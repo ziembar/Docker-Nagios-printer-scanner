@@ -27,6 +27,7 @@ def main():
     parser.add_argument('--html_content', type=str, required=True, help='Email content in HTML format')
     
     args = parser.parse_args()
+    print(args)
     
     send_email(args.from_email, args.to_email, args.subject, args.html_content)
 
