@@ -156,6 +156,12 @@ def discover_hosts():
                                 }}
                                                 """)           
 
+
+def gtfo(exitcode, message=''):
+    if message:
+        print(message)
+    exit(exitcode)
 if __name__ == "__main__":
 
     discover_hosts()
+    gtfo(0, 'network discovery done.')
