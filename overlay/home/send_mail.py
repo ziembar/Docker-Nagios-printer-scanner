@@ -10,7 +10,7 @@ def send_email(to_email, subject, html_content):
         html_content=html_content
     )
     try:
-        # get yourself your own key, thug!
+        # get yourself your own key, bozo!
         sg = SendGridAPIClient('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')
         response = sg.send(message)
         print(f'Status Code: {response.status_code}')
