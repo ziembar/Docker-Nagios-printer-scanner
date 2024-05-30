@@ -107,7 +107,8 @@ def discover_hosts():
                 servicegroups                   snmpServices
                 service_description             printer status
                 check_command                   check_netsnmp2! -H {ip}
-                notification_options            c,u,r
+                contacts                        admin
+                notification_options            w,c,u,r
                 check_interval          1
                    }}
             """)

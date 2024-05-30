@@ -237,6 +237,7 @@ RUN mkdir -p -m 0755 /usr/share/snmp/mibs                     && \
 RUN apt-get update
 RUN pip install pysnmp
 RUN pip install python-nmap
+RUN pip install sendgrid -y
 RUN apt-get install nmap -y
 RUN mkdir -p /opt/nagios/etc/discovered_printers
 
@@ -257,6 +258,7 @@ RUN chmod +x /home/rescan_reload.sh
 RUN chmod +x /opt/JR-Nagios-Plugins/check_snmp_printer2
 RUN echo "*/5 * * * * /home/rescan_reload.sh" >> /etc/crontab
 RUN ln -s /opt/nagios/libexec/utils.sh ./utils.sh
+
 
 RUN echo "use_timezone=${NAGIOS_TIMEZONE}" >> ${NAGIOS_HOME}/etc/nagios.cfg
 
