@@ -253,6 +253,8 @@ RUN rm -rf /etc/rsyslog.d /etc/rsyslog.conf
 RUN rm -rf /etc/sv/getty-5
 
 ADD overlay /
+RUN touch /opt/nagios/etc/objects/dynamicCommands.cfg
+
 
 RUN ./opt/nagios/bin/nagios -v /opt/nagios/etc/nagios.cfg
 
@@ -295,7 +297,6 @@ RUN cd /opt/nagiosgraph/etc && \
 
 RUN rm /opt/nagiosgraph/etc/fix-nagiosgraph-multiple-selection.sh
 
-RUN touch /opt/nagios/etc/objects/dynamicCommands.cfg
 
 # enable all runit services
 RUN ln -s /etc/sv/* /etc/service
