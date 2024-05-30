@@ -14,8 +14,8 @@ def delete_existing_configs(output_dir):
         if os.path.isfile(file_path):
             os.unlink(file_path)
     commands_cfg_path = "/opt/nagios/etc/objects/dynamicCommands.cfg"
-    if os.path.exists(commands_cfg_path):
-        os.remove(commands_cfg_path)
+    with open(commands_cfg_path, "w") as cfg_file:
+        cfg_file.write("")
 def append_commands_to_cfg(output):
     commands_cfg_path = "/opt/nagios/etc/objects/dynamicCommands.cfg"
 
