@@ -1,13 +1,21 @@
+import argparse
 import os
 import ipaddress
 import nmap
 from pysnmp.hlapi import SnmpEngine, CommunityData, UdpTransportTarget, ContextData, ObjectType, ObjectIdentity, getCmd
+
+parser = argparse.ArgumentParser(description='SNMP Discovery script.')
+parser.add_argument('--silent', action='store_true', help='If set, the script will not print anything.')
+args = parser.parse_args()
 
 def delete_existing_configs(output_dir):
     for filename in os.listdir(output_dir):
         file_path = os.path.join(output_dir, filename)
         if os.path.isfile(file_path):
             os.unlink(file_path)
+    commands_cfg_path = "/opt/nagios/etc/objects/dynamicCommands.cfg"
+    if os.path.exists(commands_cfg_path):
+        os.remove(commands_cfg_path)
 def append_commands_to_cfg(output):
     commands_cfg_path = "/opt/nagios/etc/objects/dynamicCommands.cfg"
 
@@ -70,9 +78,11 @@ def discover_hosts():
         )
 
         if error_indication:
-            print(f"No SNMP: {error_indication}, ip: {ip}")
+            if not args.silent:
+                print(f"No SNMP: {error_indication}, ip: {ip}")
         elif error_status:
-            print(f"No SNMP: {error_status.prettyPrint()}, ip: {ip}")
+            if not args.silent:
+                print(f"No SNMP: {error_status.prettyPrint()}, ip: {ip}")
         else:
                         for var_bind in var_binds:
                             full_name = var_bind[1].prettyPrint()
@@ -85,11 +95,13 @@ def discover_hosts():
                                 host_names[first_word] = 1
                                 unique_name = first_word
 
-                            print(f"SNMP! Saved config file for ip: {ip}")
+
                             command = f"/opt/JR-Nagios-Plugins/check_snmp_printer2 -H {ip} -C public -t 'CONSUM TEST'"
                             stream = os.popen(command)
                             output = stream.read().strip().split('\n')
-                            print(output)
+                            if not args.silent:
+                                print(f"SNMP! Saved config file for ip: {ip}")
+                                print(output)
 
                             if output:
                                 output = output[1:]
@@ -145,4 +157,5 @@ def discover_hosts():
                                                 """)           
 
 if __name__ == "__main__":
+
     discover_hosts()
