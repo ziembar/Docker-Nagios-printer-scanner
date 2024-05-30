@@ -42,7 +42,8 @@ def discover_hosts():
 
     network = os.getenv('NETWORK')
     if not network:
-        raise ValueError("NETWORK environment variable is not set")
+        print("NETWORK environment variable is not set")
+        gtfo(2, 'NETWORK environment variable is not set')
 
     try:
         network = ipaddress.ip_network(network)
@@ -50,12 +51,14 @@ def discover_hosts():
         raise ValueError(f"Invalid network format: {e}")
 
     nm = nmap.PortScanner()
-    print("Scanning network for active hosts (ICMP)...")
+    if not args.silent:
+        print("Scanning network for active hosts (ICMP)...")
     nm.scan(hosts=str(network), arguments='-sn --unprivileged')
 
     active_hosts = [host for host in nm.all_hosts() if nm[host].state() == 'up']
 
-    print(f"Active hosts found: {active_hosts}")
+    if not args.silent:
+        print(f"Active hosts found: {active_hosts}")
 
     if not active_hosts:
         print("No active hosts found.")
@@ -163,4 +166,4 @@ def gtfo(exitcode, message=''):
 if __name__ == "__main__":
 
     discover_hosts()
-    gtfo(0, 'network discovery done.')
+    gtfo(0, 'Network discovery done.')
