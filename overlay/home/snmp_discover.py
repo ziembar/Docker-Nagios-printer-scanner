@@ -96,7 +96,7 @@ def discover_hosts():
                                 unique_name = first_word
 
 
-                            command = f"/opt/JR-Nagios-Plugins/check_snmp_printer2 -H {ip} -C public -t 'CONSUM TEST'"
+                            command = f"/opt/custom-plugins/check_snmp_printer2 -H {ip} -C public -t 'CONSUM TEST'"
                             stream = os.popen(command)
                             output = stream.read().strip().split('\n')
                             if not args.silent:
