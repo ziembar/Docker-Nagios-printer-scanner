@@ -125,21 +125,12 @@ def discover_hosts():
                                 define service {{
                                     use                     generic-service
                                     host_name               {unique_name}
-                                    service_description     Printer status
-                                    check_command           check_hpjd!-C public
-                                    check_interval          5
-                                    contacts                admin
-                                    retry_interval          1
-                                }}
-
-                                define service {{
-                                    use                     generic-service
-                                    host_name               {unique_name}
                                     service_description     PING
                                     check_command           check_ping!3000.0,80%!5000.0,100%
-                                    check_interval          5
+                                    check_interval          2
                                     contacts                admin
                                     retry_interval          1
+				    notification_options    c,w
                                 }}
                                 """)
                                 for param in output:
@@ -152,7 +143,7 @@ def discover_hosts():
                                     host_name               {unique_name}
                                     service_description     {service_description}
                                     check_command           check_netsnmp2_{service_command}! -H {ip}
-                                    notification_options    c,u,r
+                                    notification_options    c,w
                                     contacts          admin
                                     check_interval          1
                                 }}
